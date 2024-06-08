@@ -1,0 +1,70 @@
+PATRIMONIO LIQUIDO NÃO FINANCEIRAS 2019 > ok
+PATRIMONIO LIQUIDO NÃO FINANCEIRAS 2019 <= ok
+PATRIMONIO LIQUIDO FINANCEIRAS 2019 >
+PATRIMONIO LIQUIDO FINANCEIRAS 2019 <=
+
+LUCRO LIQUIDO NÃO FINANCEIROAS 2019 > ok
+LUCRO LIQUIDO NÃO FINANCEIROAS 2019 <= ok
+LUCRO LIQUIDO FINANCEIRAS > 
+LUCRO LIQUIDO FINANCEIROAS <= 
+
+
+EBIT NÃO FINANCEIRAS 2019 >  ok
+EBIT NÃO FINANCEIRAS 2019 <= ok
+EBIT FINANCEIRAS 2019 > 
+EBIT FINANCEIRAS 2019 <= 
+
+
+
+PASSIVO NÃO FINANCEIRAS ok
+PASSIVO FINANCEIRAS
+
+
+#F-stat alto significa que o modelo explica grande parte da variabilidade dos dados. E que ao menos um Beta do modelo é diferente de zero.
+#Já que o F-stat = Var(modelo)/Var(residuos) -> os dados explicados pelo modelo variam e os resíduos não variam tanto pq a variabilidade
+#está sendo captada pelo modelo, logo essa variabilidade sai dos resíduos e a sua respectiva variancia fica pequena (aumentando o F).
+
+
+
+Mapeamento das principais contas da DRE:
+ll !ok!
+Interest
+Tax
+EBIT -> Com Receita liquida, CPV e SG&A posso calcular dentro da classe \
+...não precisa acessar a planilha (Da pra fazer isso com todas contas de resultado)\
+... no caso tb da pra fazer o inverso e calcula o SG&A a partir da\
+... Receita liquida, CPV e EBIT
+SG&A
+CPV
+Receita
+*Para o futuro, tentar encontrar uma forma de subtrair resultados \
+... nao recorrentes do ebitda
+
+mapeamento das principais contas do Fluxo de caixa
+D&A
+as principais contas são iguais
+6.01 Caixa liquido operacional
+6.01.01 Caixa gerado pelas operações
+6.01.02 Variação ativos passivos
+6.01.03 Outros
+6.02 Caixa liquido investimento
+6.03 Caixa liquido financiamento
+6.04 Variação cambial
+6.05 Resultado variação do caixa
+6.05.01 saldo inicial
+6.05.02 saldo final
+
+
+mapeamento das principais contas do balanço
+
+Ativo circulante
+ativo n-circulante
+ativo total = ativo circulante + n-circulante
+passivo total -> N está incluso PL!!
+passivo circulante
+passivo n-circulante = passivo total - passivo circulante
+pl
+Caixa
+
+
+
