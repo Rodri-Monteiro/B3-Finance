@@ -70,6 +70,20 @@ def get_is_info(ano)-> pd.DataFrame:
     return df
 
 @cache
+def get_cf_info(ano)-> pd.DataFrame:
+    import pandas as pd
+
+    zip = request_data(ano)
+    arquivo = 'dfp_cia_aberta_DFC_MI_con_' + str(ano) +'.csv'
+
+    content = zip.open(arquivo, 'r')
+    lines = content.readlines()
+    newlines = [line.strip().decode('ISO-8859-1') for line in lines]
+    newlines = [line.split(';') for line in newlines]
+    df = pd.DataFrame(newlines[1:], columns= newlines[0])
+    return df
+
+@cache
 def get_company_financials(ano, ticker, type) -> pd.DataFrame:
     import pandas as pd
     df = pd.DataFrame()
@@ -80,6 +94,8 @@ def get_company_financials(ano, ticker, type) -> pd.DataFrame:
             df = get_bs_liabilities_info(ano)
         case 'DRE':
             df = get_is_info(ano)
+        case 'DFC':
+            df = get_cf_info(ano)
 
     tickers = ticker_dict() #dict {ticker:cnpj}
 
@@ -105,7 +121,9 @@ def clas_setorial_excel() -> pd.DataFrame:
 
     zip = request_clas_setorial()
 
+
     zip_ref = zipfile.ZipFile(io.BytesIO(zip.content), 'r')
+    ## MUDAR O NOME ABAIXO PARA UM NOME DINÂMICO!!!!
     arquivo = 'Setorial B3 14-05-2024 (português).xlsx'
 
     with zip_ref.open(arquivo) as file:
@@ -141,7 +159,7 @@ def clas_setorial() -> pd.DataFrame:
         df = clas_setorial_excel(index = 0)
         return df
 
-    df = pd.read_excel('data/Clas_Setorial.xlsx', index_col= 'Ticker')
+    df = pd.read_excel('data/Clas_Setorial.xlsx', index_col= 'TICKER')
     return df
 
 
@@ -153,5 +171,6 @@ def company_type(ticker):
     subsetor = df.loc[ticker,'Subsetor']
     segmento = df.loc[ticker,'Segmento']
     _dict = {'Setor': setor, 'Subsetor':subsetor, 'Segmento': segmento}
+    
     return _dict
     
