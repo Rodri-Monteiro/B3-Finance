@@ -36,10 +36,10 @@ def financials(start,end,ticker):
                 df = get_company_financials(i,ticker,'DRE')
                 
                 lucro = df.loc[(df[nr_conta] == hashmap[clas_setor['Setor']]) & (df[exercicio] == 'ÚLTIMO'), valor].sum()
-                _list_lucro[i] = lucro
+                _list_lucro[i] = int(lucro)
                 
                 lucro = df.loc[(df[nr_conta] == hashmap[clas_setor['Setor']]) & (df[exercicio] == 'PENÚLTIMO'), valor].sum()
-                _list_lucro[i-1] = lucro
+                _list_lucro[i-1] = int(lucro)
 
         return _list_lucro
     
@@ -52,10 +52,10 @@ def financials(start,end,ticker):
                 #Valores do ebit para cada ano
                 
                 ebit = df.loc[(df[nr_conta] == '3.05') & (df[exercicio] == 'ÚLTIMO'), valor].sum()
-                _list_ebit[i] = ebit
+                _list_ebit[i] = int(ebit)
                 
                 ebit = df.loc[(df[nr_conta] == '3.05') & (df[exercicio] == 'PENÚLTIMO'),valor].sum()
-                _list_ebit[i-1] = ebit
+                _list_ebit[i-1] = int(ebit)
 
             #lista de depreciação e amortização para cada ano
             #EBITDA = RESULTADO LIQUIDO DO EXERCICIO ('3.09') + IRPJ/CSSL corrente e diferido('3.08') + Resultado financeiro('3.06') + Depreciação e amortização('6.01.01.02')
@@ -69,10 +69,10 @@ def financials(start,end,ticker):
             if str(i+1) not in _list_pl:
                 df = get_company_financials(i,ticker,'BPP')
                 pl = df.loc[(df[nome_conta] == 'Patrimônio Líquido Consolidado') & (df[exercicio] == 'ÚLTIMO'), valor].sum()
-                _list_pl[i] = pl
+                _list_pl[i] = int(pl)
 
                 pl = df.loc[(df[nome_conta] == 'Patrimônio Líquido Consolidado') & (df[exercicio] == 'PENÚLTIMO'), valor].sum()
-                _list_pl[i-1] = pl
+                _list_pl[i-1] = int(pl)
         return _list_pl
 
     def passivo_c(start, end, ticker):
@@ -83,10 +83,10 @@ def financials(start,end,ticker):
             if str(i+1) not in _list_passivo:
                 df = get_company_financials(i,ticker, 'BPP')
                 ev = df.loc[((df[nr_conta] == '2.01')) & (df[exercicio] == 'ÚLTIMO'), valor].sum()
-                _list_passivo[i] = ev
+                _list_passivo[i] = int(ev)
 
                 ev = df.loc[((df[nr_conta] == '2.01')) & (df[exercicio] == 'PENÚLTIMO'), valor].sum()
-                _list_passivo[i-1] = ev
+                _list_passivo[i-1] = int(ev)
             
         return _list_passivo
 
@@ -101,40 +101,38 @@ def financials(start,end,ticker):
                 
                 df = get_company_financials(i,ticker, 'BPP')
                 ev = df.loc[((df[nr_conta] == '2.02')) & (df[exercicio] == 'ÚLTIMO'), valor].sum()
-                _list_passivo_nc[i] = ev
+                _list_passivo_nc[i] = int(ev)
 
                 ev = df.loc[((df[nr_conta] == '2.02')) & (df[exercicio] == 'PENÚLTIMO'), valor].sum()
-                _list_passivo_nc[i-1] = ev
+                _list_passivo_nc[i-1] = int(ev)
             
         return _list_passivo_nc
 
     def ativo_c(start, end, ticker):
         _list_ativo = {}
-        hashmap = { 'Nome do setor' : 'Respectiva conta (para cada ffigure)'}
 
         for i in range(start, end +1):
             if str(i+1) not in _list_ativo:
                 df = get_company_financials(i,ticker, 'BPA')
                 ac = df.loc[((df[nr_conta] == '1.01')) & (df[exercicio] == 'ÚLTIMO'), valor].sum()
-                _list_ativo[i] = ac
+                _list_ativo[i] = int(ac)
 
                 ac = df.loc[((df[nr_conta] == '1.01')) & (df[exercicio] == 'PENÚLTIMO'), valor].sum()
-                _list_ativo[i-1] = ac
+                _list_ativo[i-1] = int(ac)
             
         return _list_ativo
 
     def ativo_nc(start, end, ticker):
         _list_ativo = {}
-        hashmap = { 'Nome do setor' : 'Respectiva conta (para cada ffigure)'}
 
         for i in range(start, end +1):
             if str(i+1) not in _list_ativo:
                 df = get_company_financials(i,ticker, 'BPA')
                 anc = df.loc[((df[nr_conta] == '1.02')) & (df[exercicio] == 'ÚLTIMO'), valor].sum()
-                _list_ativo[i] = anc
+                _list_ativo[i] = int(anc)
 
                 anc = df.loc[((df[nr_conta] == '1.02')) & (df[exercicio] == 'PENÚLTIMO'), valor].sum()
-                _list_ativo[i-1] = anc
+                _list_ativo[i-1] = int(anc)
             
         return _list_ativo
 
@@ -147,10 +145,10 @@ def financials(start,end,ticker):
                 #Valores do ebit para cada ano
                 
                 receita = df.loc[(df[nr_conta] == '3.01') & (df[exercicio] == 'ÚLTIMO'), valor].sum()
-                _list_receita_liquida[i] = receita
+                _list_receita_liquida[i] = int(receita)
                 
                 receita = df.loc[(df[nr_conta] == '3.01') & (df[exercicio] == 'PENÚLTIMO'),valor].sum()
-                _list_receita_liquida[i-1] = receita
+                _list_receita_liquida[i-1] = int(receita)
         return _list_receita_liquida
 
     def cpv(start,end,ticker):
@@ -162,10 +160,10 @@ def financials(start,end,ticker):
                 #Valores do ebit para cada ano
                 
                 cpv = df.loc[(df[nr_conta] == '3.02') & (df[exercicio] == 'ÚLTIMO'), valor].sum()
-                _list_cpv[i] = cpv
+                _list_cpv[i] = int(cpv)
                 
                 cpv = df.loc[(df[nr_conta] == '3.02') & (df[exercicio] == 'PENÚLTIMO'),valor].sum()
-                _list_cpv[i-1] = cpv
+                _list_cpv[i-1] = int(cpv)
 
         return _list_cpv
 
@@ -179,10 +177,10 @@ def financials(start,end,ticker):
                 #Valores do ebit para cada ano
                 
                 sga = df.loc[(df[nr_conta] == '3.04' ) & (df[exercicio] == 'ÚLTIMO'), valor].sum()
-                _list_sga[i] = sga
+                _list_sga[i] = int(sga)
                 
                 sga = df.loc[(df[nr_conta] == '3.04') & (df[exercicio] == 'PENÚLTIMO'),valor].sum()
-                _list_sga[i-1] = sga
+                _list_sga[i-1] = int(sga)
         
         return _list_sga
     
@@ -191,16 +189,53 @@ def financials(start,end,ticker):
         
         for i in range(start,end+1):
             if str(i+1) not in _list_d_a:
+                
                 #dataframe do DFC do ano e empresa especificados
                 df = get_company_financials(i,ticker,'DFC')
                 
                 d_a = df.loc[((df[nome_conta].str.contains('amortiza', case=False, na=False)) | (df[nome_conta].str.contains('deprecia', case=False, na=False))) & (df[exercicio] == 'ÚLTIMO') & (df[nr_conta].str.contains('6.01.01.', case = False, na = False)), valor].sum()
-                _list_d_a[i] = d_a
+                _list_d_a[i] = int(d_a)
 
                 d_a = df.loc[((df[nome_conta].str.contains('amortiza', case=False, na=False)) | (df[nome_conta].str.contains('deprecia', case=False, na=False))) & (df[exercicio] == 'PENÚLTIMO') & (df[nr_conta].str.contains('6.01.01.', case = False, na = False)) , valor].sum()
-                _list_d_a[i-1] = d_a
+                _list_d_a[i-1] = int(d_a)
 
         return _list_d_a
+    
+
+    def caixa(start, end, ticker):
+        _list_caixa = {}        
+        start = 2010 if start < 2010 else start
+        
+        for i in range(start, end+1):
+            if str(i+1) not in _list_caixa:
+                df = get_company_financials(i,ticker,'BPA')
+                
+                caixa = df.loc[(df[nr_conta] == '1.01.01' ) & (df[exercicio] == 'ÚLTIMO'), valor].sum()
+                _list_caixa[i] = int(caixa)
+                
+                caixa = df.loc[(df[nr_conta] == '1.01.01') & (df[exercicio] == 'PENÚLTIMO'),valor].sum()
+                _list_caixa[i-1] = int(caixa)
+        
+        return _list_caixa    
+
+    def apl_financeiras_cp(start, end, ticker):
+        _list_aplicacoes = {}        
+        start = 2010 if start < 2010 else start
+        
+        for i in range(start, end+1):
+            if str(i+1) not in _list_aplicacoes:
+                df = get_company_financials(i,ticker,'BPA')
+                
+                aplicacoes = df.loc[(df[nr_conta] == '1.01.02' ) & (df[exercicio] == 'ÚLTIMO'), valor].sum()
+                _list_aplicacoes[i] = int(aplicacoes)
+                
+                aplicacoes = df.loc[(df[nr_conta] == '1.01.02') & (df[exercicio] == 'PENÚLTIMO'),valor].sum()
+                _list_aplicacoes[i-1] = int(aplicacoes)
+        
+        return _list_aplicacoes    
+
+    ##caixa e eq. (1.01.01) e apl. financeiras (1.01.02)
+
 
     _list_financials = {'Lucro Liquido': lucro_liquido(start,end,ticker),
                         'EBIT': ebit(start,end,ticker),
@@ -212,10 +247,12 @@ def financials(start,end,ticker):
                         'SG_A' : sga(start,end,ticker),
                         'D_A' : d_a(start,end,ticker),
                         'Ativo Circulante': ativo_c(start,end,ticker),
-                        'Ativo n Circulante': ativo_nc(start,end,ticker)
+                        'Ativo n Circulante': ativo_nc(start,end,ticker),
+                        'Caixa' : caixa(start, end, ticker),
+                        'Aplicacoes financeiras' : apl_financeiras_cp(start,end,ticker)
                         }
     
     return _list_financials
     
-
+print(financials(2020,2022,'HAPV3'))
 
