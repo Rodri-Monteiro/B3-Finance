@@ -253,6 +253,4 @@ def financials(start,end,ticker):
                         }
     
     return _list_financials
-    
-print(financials(2020,2022,'HAPV3'))
 

@@ -26,25 +26,33 @@ class stock:
         self.da = contas_resultado['D_A']
         self.ac = contas_resultado['Ativo Circulante']
         self.anc = contas_resultado['Ativo n Circulante']
+        self.caixa = contas_resultado['Caixa']
+        self.aplicacoes_financeiras = contas_resultado['Aplicacoes financeiras']
+        
 
     def add(self, start, end):
-        for i in range(start,end,1):
+        start = 2011 if start < 2011 else start
+
+        for i in range(start,end+1,1):
             if i not in (self.periods):
                 contas_resultado = financials(i,i,self.name)
                 self.lucro_liquido[i] = contas_resultado['Lucro Liquido'][i]
                 self.ebit[i] = contas_resultado['EBIT'][i]
                 self.pl[i] = contas_resultado['Patrimonio Liquido'][i]
                 self.pc[i] = contas_resultado['Passivo Circulante'][i]
-                # self.pnc = self.pnc + [{k:v} for k,v in enumerate(contas_resultado['Passivo n Circulante'])]
-                # self.rl += [{k,v} for k,v in enumerate(contas_resultado['Receita Liquida'])]
-                # self.cpv += [{k,v} for k, v in  enumerate(contas_resultado['CPV'])]
-                # self.sga += [{k,v} for k, v in  enumerate(contas_resultado['SG_A'])]
-                # self.da += [{k,v} for k, v in  enumerate(contas_resultado['D_A'])]
-                # self.ac += [{k,v} for k, v in  enumerate(contas_resultado['Ativo Circulante'])]
-                # self.anc += [{k,v} for k, v in  enumerate(contas_resultado['Ativo n Circulante'])]
+                self.pnc[i] = contas_resultado['Passivo n Circulante'][i]
+                self.rl[i] = contas_resultado['Receita Liquida'][i]
+                self.cpv[i] = contas_resultado['CPV'][i]
+                self.sga[i] = contas_resultado['SG_A'][i]
+                self.da[i] = contas_resultado['D_A'][i]
+                self.ac[i] = contas_resultado['Ativo Circulante'][i]
+                self.anc[i] = contas_resultado['Ativo n Circulante'][i]
+                self.caixa[i] = contas_resultado['Caixa']
+                self.aplicacoes_financeiras[i] = contas_resultado['Aplicacoes financeiras']
 
 
-    def preco_lucro(self, start, end):
+
+    def preco_lucro_(self, start, end):
         if not (start in self.periods and end in self.periods):
             self.add(start,end)
         lucro = []
@@ -57,16 +65,22 @@ class stock:
         
     def sales_to_capital_ratio(self,start,end):
         if not (start - 1  in self.periods):
-            self.add(self,start-1,start)
-        _list_
+            self.add(self,start,start)
+        _list = {}    
         for i in range(start,end):
-
+            _list[i] = self.rl[i] / (self.ac[i-1] - (self.caixa[i-1] + self.aplicacoes_financeiras[i-1]))
             
-            
-        ind = self.rl / ()
-        ## Net Rev. / (Ativo do periodo anterior - Caixa e Equivalentes de Caixa do periodo anterior) 
-
-        
-        
-        
+        self.sales_to_capital_ratio = _list
+        ## Net Rev. / (Ativo do periodo anterior - Caixa e Equivalentes de Caixa do periodo anterior)   
         ...
+
+
+
+
+teste = stock(2020,2021, 'HAPV3')
+print(teste.pnc)
+
+teste.add(2018,2018)
+print(teste.pnc)
+# teste.preco_lucro_()
+# print(teste.preco_lucro)
