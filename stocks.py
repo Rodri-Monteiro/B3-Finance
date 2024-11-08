@@ -29,6 +29,10 @@ class stock:
         self.caixa = contas_resultado['Caixa']
         self.aplicacoes_financeiras = contas_resultado['Aplicacoes financeiras']
         
+        ##indicadores
+        self.preco_lucro = None
+        self.sales_to_capital_ratio = None
+        self.working_capital = None
 
     def add(self, start, end):
         start = 2011 if start < 2011 else start
@@ -47,8 +51,8 @@ class stock:
                 self.da[i] = contas_resultado['D_A'][i]
                 self.ac[i] = contas_resultado['Ativo Circulante'][i]
                 self.anc[i] = contas_resultado['Ativo n Circulante'][i]
-                self.caixa[i] = contas_resultado['Caixa']
-                self.aplicacoes_financeiras[i] = contas_resultado['Aplicacoes financeiras']
+                self.caixa[i] = contas_resultado['Caixa'][i]
+                self.aplicacoes_financeiras[i] = contas_resultado['Aplicacoes financeiras'][i]
 
 
 
@@ -61,26 +65,22 @@ class stock:
         lucro_medio = lucro.mean()
 
         self.preco_lucro =  self.cotacao / lucro_medio
-           
-        
-    def sales_to_capital_ratio(self,start,end):
-        if not (start - 1  in self.periods):
-            self.add(self,start,start)
-        _list = {}    
-        for i in range(start,end):
-            _list[i] = self.rl[i] / (self.ac[i-1] - (self.caixa[i-1] + self.aplicacoes_financeiras[i-1]))
-            
-        self.sales_to_capital_ratio = _list
-        ## Net Rev. / (Ativo do periodo anterior - Caixa e Equivalentes de Caixa do periodo anterior)   
-        ...
 
+    def sales_to_capital_ratio_(self,start,end):
+        if self.sales_to_capital_ratio is None:
+            if not (start - 1  in self.periods):
+                self.add(start,start)
+            _list = {}    
+            for i in range(start,end+1):
+                _list[i] = self.rl[i] / (self.ac[i-1] + self.anc[i-1] - self.caixa[i-1] - self.aplicacoes_financeiras[i-1])
 
+            self.sales_to_capital_ratio = _list
+        return self.sales_to_capital_ratio
+    
+        ## Formula: Net Revenue Atual / (Ativo do periodo anterior - Caixa e Equivalentes de Caixa do periodo anterior)
 
-
-teste = stock(2020,2021, 'HAPV3')
-print(teste.pnc)
-
-teste.add(2018,2018)
-print(teste.pnc)
-# teste.preco_lucro_()
-# print(teste.preco_lucro)
+    
+    def working_capital_(self,start,end):
+        if self.working_capital == None:
+            ...
+        return self.working_capital
