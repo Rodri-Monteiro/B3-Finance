@@ -22,7 +22,8 @@ def main():
     teste = stocks.stock(2020,2021, 'HAPV3')
 
     teste.add(2018,2018)
-    print(teste.sales_to_capital_ratio_(2019,2020))
+    print(teste.working_capital_(2019,2020))
+    
     
 
 

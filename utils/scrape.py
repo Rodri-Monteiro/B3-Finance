@@ -2,7 +2,7 @@ import requests
 from lxml.html import fromstring
 from functools import cache
 
-#Daqui uns 1 mes já vai estar falhando essa porra, mas nao ta tendo IPO msm...
+#Daqui uns 1 mes já vai estar falhando essa porra...
 def request_clas_setorial():
 
     url = 'https://www.b3.com.br/data/files/57/E6/AA/A1/68C7781064456178AC094EA8/ClassifSetorial.zip'

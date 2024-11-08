@@ -6,7 +6,8 @@ class stock:
         
         self.name = ticker
         self.periods = list(range(start,end +1))
-        self.cotacao = 1 ## N.Y.I
+        self.price = 1 ## N.Y.I
+        self.shares = 1 ## N.Y.I
 
         class_setorial = company_type(ticker)
         contas_resultado = financials(start,end,ticker)
@@ -28,11 +29,21 @@ class stock:
         self.anc = contas_resultado['Ativo n Circulante']
         self.caixa = contas_resultado['Caixa']
         self.aplicacoes_financeiras = contas_resultado['Aplicacoes financeiras']
-        
+        self.divida_circulante = contas_resultado['Divida Circulante']
+        self.divida_n_circulante = contas_resultado['Divida n Circulante']
+
+    
+        self.equity = self.price * self.shares 
+
         ##indicadores
         self.preco_lucro = None
         self.sales_to_capital_ratio = None
         self.working_capital = None
+        self.net_working_capital = None
+
+ 
+        
+
 
     def add(self, start, end):
         start = 2011 if start < 2011 else start
@@ -53,6 +64,7 @@ class stock:
                 self.anc[i] = contas_resultado['Ativo n Circulante'][i]
                 self.caixa[i] = contas_resultado['Caixa'][i]
                 self.aplicacoes_financeiras[i] = contas_resultado['Aplicacoes financeiras'][i]
+                self.divida_circulante[i] = contas_resultado['Divida Circulante'][i]
 
 
 
@@ -62,25 +74,41 @@ class stock:
         lucro = []
         for i in range(start,end+1):
             lucro += self.lucro_liquido[i]
-        lucro_medio = lucro.mean()
+        lucro_medio = self.price / lucro.mean()
 
-        self.preco_lucro =  self.cotacao / lucro_medio
+        self.preco_lucro =  self.price / (lucro_medio / self.shares)
 
     def sales_to_capital_ratio_(self,start,end):
-        if self.sales_to_capital_ratio is None:
-            if not (start - 1  in self.periods):
-                self.add(start,start)
-            _list = {}    
-            for i in range(start,end+1):
-                _list[i] = self.rl[i] / (self.ac[i-1] + self.anc[i-1] - self.caixa[i-1] - self.aplicacoes_financeiras[i-1])
+        if not (start - 1  in self.periods):
+            self.add(start,start)
+        _list = {}
+        for i in range(start,end+1):
+            _list[i] = self.rl[i] / (self.ac[i-1] + self.anc[i-1] - self.caixa[i-1] - self.aplicacoes_financeiras[i-1])
 
-            self.sales_to_capital_ratio = _list
-        return self.sales_to_capital_ratio
+        self.sales_to_capital_ratio = _list
+        return self.sales_to_capital_ratio  
     
         ## Formula: Net Revenue Atual / (Ativo do periodo anterior - Caixa e Equivalentes de Caixa do periodo anterior)
 
     
     def working_capital_(self,start,end):
-        if self.working_capital == None:
-            ...
+        if not (start in self.periods and end in self.periods):
+            self.add(start,end)
+        _list = {}
+        for i in range(start, end+1):
+            _list[i] = self.ac[i] - self.pc[i]
+        self.working_capital = _list
         return self.working_capital
+
+        #Formula: Ativo circulante - Passivo circulante
+
+    def net_working_capital_(self,start,end):
+        if not (start in self.periods and end in self.periods):
+            self.add(start,end)
+        _list = {}
+        for i in range(start,end + 1):
+            _list[i] = (self.ac[i] - self.caixa[i]) - (self.pc[i] - self.divida_circulante[i])
+        self.net_working_capital = _list
+        return self.net_working_capital
+
+        #Formula: Ativo circulante (exceto caixa) - Passivo circulante(exceto capital de terceiros)

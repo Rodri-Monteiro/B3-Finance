@@ -233,8 +233,39 @@ def financials(start,end,ticker):
                 _list_aplicacoes[i-1] = int(aplicacoes)
         
         return _list_aplicacoes    
-
     ##caixa e eq. (1.01.01) e apl. financeiras (1.01.02)
+
+
+    def divida_circulante(start,end,ticker):
+        _list_divida = {}
+        start = 2010 if start < 2010 else start
+
+        for i in range(start,end+1):
+            if str(i+1) not in _list_divida:
+                df = get_company_financials(i, ticker, 'BPP')
+
+                _list_divida[i] = df.loc[(df[nr_conta] == '2.01.04') & (df[exercicio] == 'ÚLTIMO'), valor].sum()
+                _list_divida[i] = int(_list_divida[i])
+
+                _list_divida[i-1] = df.loc[(df[nr_conta] == '2.01.04') & (df[exercicio] == 'PENÚLTIMO'), valor].sum()
+                _list_divida[i-1] = int(_list_divida[i])
+        
+        return _list_divida
+
+    def divida_n_circulante(start,end,ticker):
+        _list_divida = {}
+        start = 2010 if start < 2010 else start
+
+        for i in range(start,end+1):
+            if str(i+1) not in _list_divida:
+                df = get_company_financials(i,ticker, 'BPP')
+
+
+                _list_divida[i] = df.loc[(df[nr_conta] == '2.02.01') & (df[exercicio] == 'ÚLTIMO'), valor].sum()
+                _list_divida[i] = int(_list_divida[i])
+
+                _list_divida[i-1] = df.loc[(df[nr_conta] == '2.02.01') & (df[exercicio] == 'PENÚLTIMO'), valor].sum()
+                _list_divida[i-1] = int(_list_divida[i])
 
 
     _list_financials = {'Lucro Liquido': lucro_liquido(start,end,ticker),
@@ -249,7 +280,9 @@ def financials(start,end,ticker):
                         'Ativo Circulante': ativo_c(start,end,ticker),
                         'Ativo n Circulante': ativo_nc(start,end,ticker),
                         'Caixa' : caixa(start, end, ticker),
-                        'Aplicacoes financeiras' : apl_financeiras_cp(start,end,ticker)
+                        'Aplicacoes financeiras' : apl_financeiras_cp(start,end,ticker),
+                        'Divida Circulante' : divida_circulante(start,end,ticker),
+                        'Divida n Circulane' : divida_n_circulante(start,end,ticker),
                         }
     
     return _list_financials
